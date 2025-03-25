@@ -1,4 +1,87 @@
-# Astro Starter Kit: Basics
+# Web Idiomas - Linguaflix
+
+An interactive platform for learning languages (German and Spanish) developed with Astro and React.
+
+## 🚀 Features
+
+- **Interactive Lessons**: Content structured by levels (Basic, Intermediate, Advanced)
+- **Multimedia Components**:
+  - Video player integrated with Plyr
+  - Vocabulary section with images and translations
+  - Pronunciation practice with visual feedback
+- **Responsive Design**: Adaptive interface for all devices
+- **Intuitive Navigation**: Slidable card system to explore lessons
+
+## 🛠️ Technologies Used
+
+- [Astro](https://astro.build/) - Modern web framework
+- [React](https://reactjs.org/) - JavaScript library for interfaces
+- [Tailwind CSS](https://tailwindcss.com/) - Utility CSS framework
+- [Plyr](https://github.com/sampotts/plyr) - HTML5 video player
+
+## 📚 Project Structure
+
+```
+web-idiomas/
+├── src/
+│   ├── components/     # Reusable components
+│   ├── layouts/        # Page templates
+│   ├── pages/         # Pages and routes
+│   └── data/          # Data and content
+├── public/            # Static files
+└── package.json       # Dependencies and scripts
+```
+
+## 🚧 Current Status
+
+The project is under active development. Currently implemented:
+
+- ✅ Main page with level navigation
+- ✅ Basic lesson system
+- ✅ Custom video player controls
+- ✅ Vocabulary section with images
+- ✅ Interactive pronunciation practice
+
+### In Progress
+
+- 🔄 Implementation of more lessons and content
+- 🔄 Interactivity improvements
+- 🔄 User progress system
+- 🔄 Performance optimization
+
+## 🚀 How to Run
+
+1. Clone the repository:
+```bash
+git clone https://github.com/IanPaniagua/web-idiomas-linguaflix.git
+cd web-idiomas
+```
+
+2. Install dependencies:
+```bash
+pnpm install
+```
+
+3. Start the development server:
+```bash
+pnpm dev
+```
+
+4. Open [http://localhost:4321](http://localhost:4321) in your browser
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Contributing
+
+Contributions are welcome. Please open an issue first to discuss the changes you would like to make.
+
+## 📞 Contact
+
+Ian Paniagua - [@IanPaniagua](https://github.com/IanPaniagua)
+
+Project Link: [https://github.com/IanPaniagua/web-idiomas-linguaflix](https://github.com/IanPaniagua/web-idiomas-linguaflix)
 
 ```sh
 npm create astro@latest -- --template basics
