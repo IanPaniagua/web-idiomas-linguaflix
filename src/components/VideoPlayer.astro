@@ -1,0 +1,128 @@
+---
+interface Props {
+  provider: 'youtube' | 'vimeo' | 'local';
+  videoId?: string;
+  videoUrl?: string;
+  title: string;
+}
+
+const { provider, videoId, videoUrl, title } = Astro.props;
+---
+
+<div class="video-container">
+  {provider === 'local' ? (
+    <video 
+      class="plyr-video"
+      src={videoUrl}
+      controls
+      playsinline
+    >
+      Tu navegador no soporta el elemento de video.
+    </video>
+  ) : provider === 'youtube' ? (
+    <div 
+      class="plyr__video-embed" 
+      id="player"
+    >
+      <iframe
+        src={`https://www.youtube.com/embed/${videoId}?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1`}
+        allowfullscreen
+        allowtransparency
+        allow="autoplay"
+      ></iframe>
+    </div>
+  ) : (
+    <div 
+      class="plyr__video-embed" 
+      id="player"
+    >
+      <iframe
+        src={`https://player.vimeo.com/video/${videoId}?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media`}
+        allowfullscreen
+        allowtransparency
+        allow="autoplay"
+      ></iframe>
+    </div>
+  )}
+</div>
+
+<script>
+import 'plyr/dist/plyr.css';
+import Plyr from 'plyr';
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar Plyr en los videos
+  const players = Plyr.setup('.plyr-video, .plyr__video-embed', {
+    controls: [
+      'play-large', // The large play button in the center
+      'play', // Play/pause playback
+      'progress', // The progress bar and scrubber
+      'current-time', // The current time
+      'duration', // The full duration
+      'mute', // Toggle mute
+      'volume', // Volume control
+      'captions', // Toggle captions
+      'settings', // Settings menu
+      'fullscreen' // Toggle fullscreen
+    ],
+    tooltips: { controls: true, seek: true },
+    keyboard: { focused: true, global: true },
+  });
+});
+</script>
+
+<style>
+  .video-container {
+    position: relative;
+    margin-bottom: 2rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    aspect-ratio: 16 / 9;
+  }
+
+  .plyr-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .plyr__video-embed {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .plyr__video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Estilos específicos para Plyr */
+  :global(.plyr--full-ui input[type=range]) {
+    color: #22c55e; /* Verde */
+  }
+
+  :global(.plyr--video .plyr__control--overlaid) {
+    background: rgba(14, 165, 233, 0.8); /* Azul claro */
+  }
+
+  :global(.plyr--video .plyr__control:hover) {
+    background: #22c55e; /* Verde */
+  }
+
+  :global(.plyr--full-ui input[type=range]::-webkit-slider-thumb) {
+    background: #22c55e; /* Verde */
+  }
+
+  :global(.plyr__control--overlaid:focus),
+  :global(.plyr__control--overlaid:hover) {
+    background: rgba(34, 197, 94, 0.9) !important; /* Verde */
+  }
+</style> 

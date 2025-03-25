@@ -1,11 +1,241 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import MainLayout from '../layouts/MainLayout.astro';
+import ScrollableRow from '../components/ScrollableRow.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const levels = [
+  {
+    title: "Nivel Básico",
+    items: [
+      {
+        id: "saludos",
+        title: "Saludos y Presentaciones",
+        image: "https://picsum.photos/seed/saludos/400/300",
+        level: "Básico",
+        category: "Conversación"
+      },
+      {
+        id: "numeros",
+        title: "Números y Contar",
+        image: "https://picsum.photos/seed/numeros/400/300",
+        level: "Básico",
+        category: "Vocabulario"
+      },
+      {
+        id: "restaurante",
+        title: "En el Restaurante",
+        image: "https://picsum.photos/seed/restaurante/400/300",
+        level: "Básico",
+        category: "Situaciones Cotidianas"
+      },
+      {
+        id: "familia",
+        title: "La Familia",
+        image: "https://picsum.photos/seed/familia/400/300",
+        level: "Básico",
+        category: "Vocabulario"
+      },
+      {
+        id: "colores",
+        title: "Los Colores",
+        image: "https://picsum.photos/seed/colores/400/300",
+        level: "Básico",
+        category: "Vocabulario"
+      },
+      {
+        id: "profesiones",
+        title: "Profesiones",
+        image: "https://picsum.photos/seed/profesiones/400/300",
+        level: "Básico",
+        category: "Vocabulario"
+      },
+      {
+        id: "tiempo",
+        title: "El Tiempo",
+        image: "https://picsum.photos/seed/tiempo/400/300",
+        level: "Básico",
+        category: "Vocabulario"
+      },
+      {
+        id: "comida",
+        title: "La Comida",
+        image: "https://picsum.photos/seed/comida/400/300",
+        level: "Básico",
+        category: "Vocabulario"
+      }
+    ]
+  },
+  {
+    title: "Nivel Intermedio",
+    items: [
+      {
+        id: "viajes",
+        title: "Viajes y Turismo",
+        image: "https://picsum.photos/seed/viajes/400/300",
+        level: "Intermedio",
+        category: "Situaciones Cotidianas"
+      },
+      {
+        id: "trabajo",
+        title: "En el Trabajo",
+        image: "https://picsum.photos/seed/trabajo/400/300",
+        level: "Intermedio",
+        category: "Profesional"
+      },
+      {
+        id: "salud",
+        title: "Salud y Bienestar",
+        image: "https://picsum.photos/seed/salud/400/300",
+        level: "Intermedio",
+        category: "Situaciones Cotidianas"
+      },
+      {
+        id: "deportes",
+        title: "Deportes y Ejercicio",
+        image: "https://picsum.photos/seed/deportes/400/300",
+        level: "Intermedio",
+        category: "Hobbies"
+      },
+      {
+        id: "tecnologia",
+        title: "Tecnología",
+        image: "https://picsum.photos/seed/tecnologia/400/300",
+        level: "Intermedio",
+        category: "Actualidad"
+      },
+      {
+        id: "cultura",
+        title: "Cultura y Arte",
+        image: "https://picsum.photos/seed/cultura/400/300",
+        level: "Intermedio",
+        category: "Cultura"
+      },
+      {
+        id: "clima",
+        title: "El Clima",
+        image: "https://picsum.photos/seed/clima/400/300",
+        level: "Intermedio",
+        category: "Situaciones Cotidianas"
+      },
+      {
+        id: "hobbies",
+        title: "Hobbies y Pasatiempos",
+        image: "https://picsum.photos/seed/hobbies/400/300",
+        level: "Intermedio",
+        category: "Hobbies"
+      }
+    ]
+  },
+  {
+    title: "Nivel Avanzado",
+    items: [
+      {
+        id: "literatura",
+        title: "Literatura y Arte",
+        image: "https://picsum.photos/seed/literatura/400/300",
+        level: "Avanzado",
+        category: "Cultura"
+      },
+      {
+        id: "politica",
+        title: "Política y Sociedad",
+        image: "https://picsum.photos/seed/politica/400/300",
+        level: "Avanzado",
+        category: "Actualidad"
+      },
+      {
+        id: "ciencia",
+        title: "Ciencia y Tecnología",
+        image: "https://picsum.photos/seed/ciencia/400/300",
+        level: "Avanzado",
+        category: "Ciencia"
+      },
+      {
+        id: "historia",
+        title: "Historia",
+        image: "https://picsum.photos/seed/historia/400/300",
+        level: "Avanzado",
+        category: "Cultura"
+      },
+      {
+        id: "filosofia",
+        title: "Filosofía",
+        image: "https://picsum.photos/seed/filosofia/400/300",
+        level: "Avanzado",
+        category: "Cultura"
+      },
+      {
+        id: "economia",
+        title: "Economía",
+        image: "https://picsum.photos/seed/economia/400/300",
+        level: "Avanzado",
+        category: "Actualidad"
+      },
+      {
+        id: "medioambiente",
+        title: "Medio Ambiente",
+        image: "https://picsum.photos/seed/medioambiente/400/300",
+        level: "Avanzado",
+        category: "Actualidad"
+      },
+      {
+        id: "globalizacion",
+        title: "Globalización",
+        image: "https://picsum.photos/seed/globalizacion/400/300",
+        level: "Avanzado",
+        category: "Actualidad"
+      }
+    ]
+  }
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<MainLayout>
+  <div class="hero-section">
+    <div class="hero-content">
+      <h1 class="text-5xl font-bold mb-4">Aprende Alemán y Español</h1>
+      <p class="text-xl mb-8">Mejora tus habilidades lingüísticas con lecciones interactivas y prácticas</p>
+      <a href="#cursos" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-lg transition-colors duration-300 shadow-md">
+        Empezar a aprender
+      </a>
+    </div>
+  </div>
+
+  <div id="cursos" class="container mx-auto px-4 py-12">
+    {levels.map((level) => (
+      <ScrollableRow title={level.title} items={level.items} />
+    ))}
+  </div>
+</MainLayout>
+
+<style>
+  .hero-section {
+    background-image: url('https://picsum.photos/seed/hero/1920/1080');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    position: relative;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(88, 28, 135, 0.6);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 1rem;
+  }
+</style>

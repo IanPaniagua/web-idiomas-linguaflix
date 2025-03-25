@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  items: {
+    id: string;
+    title: string;
+    image: string;
+    level: string;
+    category: string;
+  }[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="content-row">
+  <h2 class="content-title">{title}</h2>
+  <div class="card-container">
+    {
+      items.map((item) => (
+        <a href={`/lesson/${item.id}`} class="content-card">
+          <div class="relative group">
+            <img
+              src={item.image}
+              alt={item.title}
+              class="content-card-image"
+            />
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300">
+              <div class="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <h3 class="text-lg font-semibold">{item.title}</h3>
+                <p class="text-sm">{item.category}</p>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section> 

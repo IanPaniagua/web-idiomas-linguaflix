@@ -1,0 +1,101 @@
+---
+interface Props {
+  title: string;
+  items: {
+    id: string;
+    title: string;
+    image: string;
+    level: string;
+    category: string;
+  }[];
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="mb-12">
+  <h2 class="text-3xl font-bold mb-6">{title}</h2>
+  <div class="relative group">
+    <!-- Botón izquierdo -->
+    <button 
+      class="scroll-left absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-purple-600/70 hover:bg-purple-700/80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-300 opacity-0 group-hover:opacity-100"
+      aria-label="Desplazar a la izquierda">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <!-- Contenedor de scroll -->
+    <div 
+      class="scroll-container overflow-x-auto scrollbar-hide px-4"
+      style="scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth">
+      <div class="flex gap-4 py-2">
+        {items.map((item) => (
+          <a 
+            href={`/lesson/${item.id}`} 
+            class="flex-shrink-0 w-[250px] sm:w-[280px] md:w-[300px] block"
+          >
+            <div class="card-container bg-white rounded-lg shadow-md overflow-hidden">
+              <div class="aspect-video relative overflow-hidden">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                />
+                <div class="absolute inset-0 bg-purple-900 bg-opacity-0 hover:bg-opacity-30 transition-all duration-300">
+                </div>
+              </div>
+              <div class="p-3 sm:p-4">
+                <h3 class="text-base sm:text-lg font-semibold line-clamp-2 min-h-[2.5rem] sm:min-h-[3rem]">{item.title}</h3>
+                <p class="text-xs sm:text-sm text-gray-600 mt-1">{item.category}</p>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Botón derecho -->
+    <button 
+      class="scroll-right absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-purple-600/70 hover:bg-purple-700/80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors duration-300 opacity-0 group-hover:opacity-100"
+      aria-label="Desplazar a la derecha">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const containers = document.querySelectorAll('.scroll-container');
+    
+    containers.forEach(container => {
+      const leftButton = container.parentElement?.querySelector('.scroll-left');
+      const rightButton = container.parentElement?.querySelector('.scroll-right');
+      
+      if (leftButton && rightButton) {
+        // Función para desplazar
+        const scroll = (direction) => {
+          // @ts-ignore
+          const scrollAmount = direction === 'left' ? -300 : 300;
+          container.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+          });
+        };
+        
+        // Agregar event listeners
+        leftButton.addEventListener('click', () => scroll('left'));
+        rightButton.addEventListener('click', () => scroll('right'));
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Ocultar la barra de desplazamiento */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+</style> 

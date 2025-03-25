@@ -1,0 +1,417 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import PronunciationPractice from '../../components/PronunciationPractice.astro';
+import VideoPlayer from '../../components/VideoPlayer.astro';
+import VocabularySection from '../../components/VocabularySection.astro';
+import { getVocabularyByLessonId } from '../../data/vocabulary';
+
+// En un entorno real, estos datos vendrían de una base de datos o API
+export const lessonData = {
+  restaurante: {
+    title: "Ordenando en el Restaurante",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Aprende frases útiles y vocabulario para ordenar comida en un restaurante en alemán.</p>`,
+    practicePhrases: [
+      {
+        text: "Einen Tisch für zwei Personen, bitte.",
+        translation: "Una mesa para dos personas, por favor.",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Ich möchte die Speisekarte sehen.",
+        translation: "Me gustaría ver el menú.",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Was können Sie empfehlen?",
+        translation: "¿Qué me recomienda?",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Die Rechnung, bitte.",
+        translation: "La cuenta, por favor.",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Das Essen war sehr lecker!",
+        translation: "¡La comida estaba muy rica!",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  saludos: {
+    title: "Saludos y Presentaciones",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Aprende a presentarte y saludar correctamente en alemán.</p>`,
+    practicePhrases: [
+      {
+        text: "Guten Tag, wie geht es Ihnen?",
+        translation: "Buenos días, ¿cómo está usted?",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Mein Name ist Thomas. Und du?",
+        translation: "Mi nombre es Thomas. ¿Y tú?",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Woher kommst du?",
+        translation: "¿De dónde eres?",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Freut mich, dich kennenzulernen.",
+        translation: "Encantado de conocerte.",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Auf Wiedersehen und einen schönen Tag noch!",
+        translation: "¡Adiós y que tengas un buen día!",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  numeros: {
+    title: "Números y Contar",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Eins, zwei, drei, vier, fünf.",
+        translation: "Uno, dos, tres, cuatro, cinco.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  familia: {
+    title: "La Familia",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Das ist meine Familie.",
+        translation: "Esta es mi familia.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  colores: {
+    title: "Los Colores",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Rot, blau, gelb, grün, schwarz, weiß.",
+        translation: "Rojo, azul, amarillo, verde, negro, blanco.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  viajes: {
+    title: "Viajes y Turismo",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Domina el vocabulario y frases esenciales para viajar por países de habla alemana.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich möchte ein Zimmer für drei Nächte buchen.",
+        translation: "Me gustaría reservar una habitación para tres noches.",
+        audioUrl: "/audios/audio-test.mp3"
+      },
+      {
+        text: "Wann fährt der nächste Zug nach Berlin?",
+        translation: "¿Cuándo sale el próximo tren a Berlín?",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  trabajo: {
+    title: "En el Trabajo",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich arbeite in einem Büro.",
+        translation: "Trabajo en una oficina.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  salud: {
+    title: "Salud y Bienestar",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich fühle mich nicht wohl.",
+        translation: "No me siento bien.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  deportes: {
+    title: "Deportes y Ejercicio",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich spiele gerne Fußball.",
+        translation: "Me gusta jugar al fútbol.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  tecnologia: {
+    title: "Tecnología",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich benutze mein Smartphone jeden Tag.",
+        translation: "Uso mi smartphone todos los días.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  cultura: {
+    title: "Cultura y Arte",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich gehe gerne ins Museum.",
+        translation: "Me gusta ir al museo.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  clima: {
+    title: "El Clima",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Heute regnet es stark.",
+        translation: "Hoy llueve fuerte.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  hobbies: {
+    title: "Hobbies y Pasatiempos",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "In meiner Freizeit lese ich gerne.",
+        translation: "En mi tiempo libre me gusta leer.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  literatura: {
+    title: "Literatura y Arte",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Ich habe einen Roman von Goethe gelesen.",
+        translation: "He leído una novela de Goethe.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  politica: {
+    title: "Política y Sociedad",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Die Wahlen finden nächsten Monat statt.",
+        translation: "Las elecciones tendrán lugar el próximo mes.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  ciencia: {
+    title: "Ciencia y Tecnología",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Neue Technologien verändern unser Leben.",
+        translation: "Las nuevas tecnologías cambian nuestras vidas.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  historia: {
+    title: "Historia",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Die Berliner Mauer fiel im Jahr 1989.",
+        translation: "El muro de Berlín cayó en 1989.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  filosofia: {
+    title: "Filosofía",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Kant ist ein berühmter deutscher Philosoph.",
+        translation: "Kant es un famoso filósofo alemán.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  economia: {
+    title: "Economía",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Die Inflation ist ein wirtschaftliches Problem.",
+        translation: "La inflación es un problema económico.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  medioambiente: {
+    title: "Medio Ambiente",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Wir müssen unseren Planeten schützen.",
+        translation: "Debemos proteger nuestro planeta.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  },
+  
+  globalizacion: {
+    title: "Globalización",
+    videoUrl: "/videos/test.mp4",
+    content: `<p>Esta lección está en desarrollo. Pronto añadiremos más contenido.</p>`,
+    practicePhrases: [
+      {
+        text: "Die Welt wird immer vernetzter.",
+        translation: "El mundo está cada vez más conectado.",
+        audioUrl: "/audios/audio-test.mp3"
+      }
+    ]
+  }
+};
+
+// Función requerida para rutas dinámicas en Astro
+export function getStaticPaths() {
+  // Genera rutas para todas las lecciones disponibles
+  return Object.keys(lessonData).map(id => ({
+    params: { id }
+  }));
+}
+
+// Obtener el ID de la lección de los parámetros de la URL
+const { id } = Astro.params;
+const lesson = lessonData[id as keyof typeof lessonData];
+
+// Obtener el vocabulario específico para esta lección
+const vocabularyData = getVocabularyByLessonId(id || '');
+---
+
+<MainLayout title={lesson?.title}>
+  {lesson ? (
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-purple-700">{lesson.title}</h1>
+      </div>
+      
+      {/* 1. Video */}
+      <VideoPlayer 
+        provider="local"
+        videoUrl={lesson.videoUrl}
+        title={lesson.title}
+      />
+      
+      {/* 2. Frases útiles con audio para repetir */}
+      {lesson.practicePhrases && lesson.practicePhrases.length > 0 && (
+        <PronunciationPractice 
+          phrases={lesson.practicePhrases} 
+          title="Tu turno: repite las siguientes frases" 
+        />
+      )}
+      
+      {/* 3. Vocabulario Esencial */}
+      {vocabularyData && (
+        <VocabularySection
+          title="Vocabulario Esencial"
+          category={vocabularyData.category}
+          items={vocabularyData.items}
+        />
+      )}
+      
+      {/* 4. Contenido adicional de la lección */}
+      <div class="lesson-content mb-8">
+        <div set:html={lesson.content} />
+      </div>
+    </div>
+  ) : (
+    <div class="max-w-3xl mx-auto px-4 py-8 text-center">
+      <h1 class="text-4xl font-bold mb-4 text-purple-700">Lección no encontrada</h1>
+      <p class="mb-8 text-purple-600">Lo sentimos, la lección que estás buscando no existe.</p>
+      <a href="/" class="inline-block bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300">
+        Volver al inicio
+      </a>
+    </div>
+  )}
+</MainLayout>
+
+<style>
+  .lesson-content :global(h2) {
+    @apply text-2xl font-semibold mb-6 text-purple-700;
+  }
+  
+  .lesson-content :global(h3) {
+    @apply text-xl font-medium mb-4 text-purple-600;
+  }
+  
+  .lesson-content :global(p) {
+    @apply mb-4 text-purple-950;
+  }
+  
+  .lesson-content :global(ul) {
+    @apply list-none pl-0 mb-4 text-purple-950;
+  }
+  
+  .lesson-content :global(li) {
+    @apply mb-1;
+  }
+
+  /* Estilos para el contenido básico */
+  .lesson-content :global(.bg-gray-800) {
+    @apply bg-purple-50 border border-purple-200 shadow-sm;
+  }
+</style> 
